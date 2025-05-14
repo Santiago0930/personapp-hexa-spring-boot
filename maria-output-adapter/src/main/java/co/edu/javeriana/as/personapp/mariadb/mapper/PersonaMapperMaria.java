@@ -15,7 +15,9 @@ import co.edu.javeriana.as.personapp.mariadb.entity.EstudiosEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.TelefonoEntity;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Mapper
 public class PersonaMapperMaria {
 
@@ -27,6 +29,7 @@ public class PersonaMapperMaria {
 
 	public PersonaEntity fromDomainToAdapter(Person person) {
 		PersonaEntity personaEntity = new PersonaEntity();
+
 		personaEntity.setCc(person.getIdentification());
 		personaEntity.setNombre(person.getFirstName());
 		personaEntity.setApellido(person.getLastName());
@@ -34,6 +37,9 @@ public class PersonaMapperMaria {
 		personaEntity.setEdad(validateEdad(person.getAge()));
 		personaEntity.setEstudios(validateEstudios(person.getStudies()));
 		personaEntity.setTelefonos(validateTelefonos(person.getPhoneNumbers()));
+
+		log.warn("PersonaEntity: " + personaEntity.toString());
+
 		return personaEntity;
 	}
 
@@ -58,10 +64,14 @@ public class PersonaMapperMaria {
 	}
 
 	public Person fromAdapterToDomain(PersonaEntity personaEntity) {
+		log.warn("PersonaEntity: " + personaEntity.toString());
 		Person person = new Person();
 		person.setIdentification(personaEntity.getCc());
 		person.setFirstName(personaEntity.getNombre());
 		person.setLastName(personaEntity.getApellido());
+
+		log.info("Genero: " + personaEntity.getGenero());
+
 		person.setGender(validateGender(personaEntity.getGenero()));
 		person.setAge(validateAge(personaEntity.getEdad()));
 		person.setStudies(validateStudies(personaEntity.getEstudios()));

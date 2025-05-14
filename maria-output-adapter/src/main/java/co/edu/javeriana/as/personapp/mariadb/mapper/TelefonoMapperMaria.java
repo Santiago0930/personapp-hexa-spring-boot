@@ -3,6 +3,7 @@ package co.edu.javeriana.as.personapp.mariadb.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.edu.javeriana.as.personapp.common.annotations.Mapper;
+import co.edu.javeriana.as.personapp.domain.Gender;
 import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
@@ -36,6 +37,16 @@ public class TelefonoMapperMaria {
 	}
 
 	private @NonNull Person validateOwner(PersonaEntity duenio) {
-		return duenio != null ? personaMapperMaria.fromAdapterToDomain(duenio) : new Person();
+		Person owner = new Person();
+	
+		if (duenio != null) {
+			owner.setIdentification(duenio.getCc());
+			owner.setFirstName(duenio.getNombre());
+			owner.setLastName(duenio.getApellido());
+			owner.setGender(duenio.getGenero().equals("M") ? Gender.MALE : Gender.FEMALE);
+			owner.setAge(duenio.getEdad());
+		}
+	
+		return owner;
 	}
 }

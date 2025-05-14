@@ -32,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 @Adapter
 public class StudyInputAdapterRest {
 
-    // MariaDB Adapters
     @Autowired
     @Qualifier("studyOutputAdapterMaria")
     private StudyOutputPort studyOutputPortMaria;
@@ -45,7 +44,6 @@ public class StudyInputAdapterRest {
     @Qualifier("professionOutputAdapterMaria")
     private ProfessionOutputPort professionOutputPortMaria;
 
-    // MongoDB Adapters
     @Autowired
     @Qualifier("studyOutputAdapterMongo")
     private StudyOutputPort studyOutputPortMongo;
@@ -58,11 +56,9 @@ public class StudyInputAdapterRest {
     @Qualifier("professionOutputAdapterMongo")
     private ProfessionOutputPort professionOutputPortMongo;
 
-    // Mapper
     @Autowired
     private StudyMapperRest studyMapperRest;
 
-    // UseCase
     private StudyInputPort studyInputPort;
     private PersonInputPort personInputPort;
     private ProfessionInputPort professionInputPort;
@@ -70,7 +66,6 @@ public class StudyInputAdapterRest {
     private String setStudyOutputPortInjection(String dbOption) throws InvalidOptionException {
         if (dbOption.equalsIgnoreCase(DatabaseOption.MARIA.toString())) {
 
-            // Assign the correct output port to the input port
             studyInputPort = new StudyUseCase(studyOutputPortMaria);
             personInputPort = new PersonUseCase(personOutputPortMaria);
             professionInputPort = new ProfessionUseCase(professionOutputPortMaria);
@@ -79,7 +74,6 @@ public class StudyInputAdapterRest {
 
         } else if (dbOption.equalsIgnoreCase(DatabaseOption.MONGO.toString())) {
 
-            // Assign the correct output port to the input port
             studyInputPort = new StudyUseCase(studyOutputPortMongo);
             personInputPort = new PersonUseCase(personOutputPortMongo);
             professionInputPort = new ProfessionUseCase(professionOutputPortMongo);
@@ -91,7 +85,6 @@ public class StudyInputAdapterRest {
         }
     }
 
-    // View All Studies
     public List<StudyResponse> historial(String database) {
         log.info("Into historial StudyEntity in Input Adapter");
         try {
@@ -196,7 +189,6 @@ public class StudyInputAdapterRest {
             Person person = personInputPort.findOne(Integer.parseInt(request.getIdCcPerson()));
             Profession profession = professionInputPort.findOne(Integer.parseInt(request.getIdProfession()));
             
-            // Update study with profession and person as inputs
             Study study = studyInputPort.edit(Integer.parseInt(request.getIdProfession()), Integer.parseInt(request.getIdCcPerson()),
                                               studyMapperRest.fromAdapterToDomain(request, profession, person));
             

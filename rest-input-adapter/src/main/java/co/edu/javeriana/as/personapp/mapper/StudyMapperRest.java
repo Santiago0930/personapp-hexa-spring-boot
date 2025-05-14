@@ -46,8 +46,6 @@ public class StudyMapperRest {
             "OK"
         );
     }
-    
-    
 
     public Study fromAdapterToDomain(StudyRequest request, Profession profession, Person person) {
         log.info("Into fromAdapterToDomain with request: {}, profession: {}, person: {}", request, profession, person);

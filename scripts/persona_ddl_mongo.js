@@ -1,4 +1,4 @@
-use admin
+db = db.getSiblingDB('admin');
 
 db.createUser({
   user: "persona_db",
@@ -9,4 +9,4 @@ db.createUser({
     { role: "dbAdmin", db: "persona_db" }
   ],
   mechanisms: ["SCRAM-SHA-1","SCRAM-SHA-256"]
-})
+});

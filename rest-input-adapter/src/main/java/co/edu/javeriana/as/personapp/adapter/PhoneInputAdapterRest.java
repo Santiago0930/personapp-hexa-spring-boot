@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Adapter
 public class PhoneInputAdapterRest {
-	//Maria
 	@Autowired
 	@Qualifier("phoneOutputAdapterMaria")
 	private PhoneOutputPort phoneOutputPortMaria;
@@ -39,7 +38,7 @@ public class PhoneInputAdapterRest {
 	@Autowired
 	@Qualifier("phoneOutputAdapterMongo")
     private PhoneOutputPort phoneOutputPortMongo;
-	//Mongo
+	
     @Autowired
     @Qualifier("personOutputAdapterMongo")
     private PersonOutputPort personOutputPortMongo;
