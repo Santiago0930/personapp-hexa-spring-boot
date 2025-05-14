@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  rest-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rest-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo-db
+      - maria-db
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://persona_db:persona_db@mongo-db:27017/persona_db?authSource=admin
+      SPRING_DATASOURCE_URL: jdbc:mariadb://maria-db:3306/persona_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.mariadb.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MariaDBDialect
+      APP_DEBUG_LEVEL: INFO
+    networks:
+      - app-network
+    restart: always
+
+  mongo-db:
+    image: mongo:5.0
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'root'
+      MONGO_INITDB_ROOT_PASSWORD: 'rootpassword'
+      MONGO_INITDB_DATABASE: persona_db
+    volumes:
+      - mongo_data:/data/db
+      - ./scripts/persona_ddl_mongo.js:/docker-entrypoint-initdb.d/persona_ddl_mongo.js:ro
+      - ./scripts/persona_dml_mongo.js:/docker-entrypoint-initdb.d/persona_dml_mongo.js:ro
+    networks:
+      - app-network
+
+  maria-db:
+    image: mariadb:10.5
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: persona_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./scripts:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mongo_data:
+  mariadb_data:

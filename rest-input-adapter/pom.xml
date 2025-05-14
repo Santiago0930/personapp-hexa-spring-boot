@@ -11,6 +11,7 @@
 	<artifactId>rest-input-adapter</artifactId>
 	<name>PersonAPP REST Input Adapter</name>
 	<description>REST API Input Adapter for PersonAPP</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>co.edu.javeriana.as.personapp</groupId>
@@ -26,7 +27,7 @@
 			<groupId>co.edu.javeriana.as.personapp</groupId>
 			<artifactId>mongo-output-adapter</artifactId>
 			<version>${revision}</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -37,6 +38,18 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.7.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -45,12 +58,27 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${global.springframework.boot.version}</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<mainClass>co.edu.javeriana.as.personapp.PersonAppRestApi</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>co.edu.javeriana.as.personapp.PersonAppRestApi</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
